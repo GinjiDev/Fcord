@@ -93,6 +93,7 @@ intents.guilds = True  # Необходимо для работы со спис�
 
 # Создаём объект бота с использованием commands.Bot
 bot = commands.Bot(command_prefix="!", intents=intents)
+bot.mircord_api_key = "MIRCORD_KEY"
 
 # Событие, срабатывающее при запуске бота
 @bot.event
@@ -102,5 +103,5 @@ async def on_ready():
     print(f"Бот {bot.user} запущен и Mircord_API_Py активен.")
 
 # Запуск бота
-bot.run('YOUR_BOT_TOKEN')
+bot.run('BOT-TOKEN')
 ```
