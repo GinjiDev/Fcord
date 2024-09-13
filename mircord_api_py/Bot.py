@@ -3,6 +3,8 @@ import asyncio
 import httpx
 import logging
 
+from data import errors
+
 class MircordBotStats:
     def __init__(self, bot, retry_after: int = 120, update_interval: int = 120):
         
@@ -78,19 +80,8 @@ class MircordBotStats:
 
     async def handle_error(self, response: httpx.Response) -> None:
         status_code = response.status_code
-        error_messages = {
-            429: "Превышен лимит запросов. Повтор через минуту.",
-            401: "Неавторизован. Проверьте ваш API-ключ.",
-            403: "Доступ запрещен. Проверьте права доступа или ваш API-ключ.",
-            404: "Ресурс не найден. Проверьте URL.",
-            500: "Ошибка на сервере. Попробуйте позже.",
-            502: "Ошибка шлюза. Попробуйте позже.",
-            503: "Сервис временно недоступен. Попробуйте позже.",
-            504: "Тайм-аут шлюза. Попробуйте позже.",
-            302: "Перенаправление: Запрашиваемый ресурс временно перемещен. Проверьте новый URL в заголовках ответа."
-        }
 
-        message = error_messages.get(status_code, f"Неожиданный код ошибки: {status_code}. Проверьте библиотеку.")
+        message = errors.get(status_code, f"Неожиданный код ошибки: {status_code}. Проверьте библиотеку.")
         self.logger.error(f"Ошибка при отправке запроса: Код - {status_code} | {message}")
 
         if status_code == 429:
