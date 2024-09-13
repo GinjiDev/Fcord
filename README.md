@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="https://mircord.xyz/img/logo.png" alt="Mircord Logo" width="200" style="border-radius: 50%; border: 2px solid #4CAF50;">
+</p>
 # Mircord_API_Py
 
 **Mircord_API_Py** — это Python-библиотека, предназначенная для интеграции с `discord.py`(+ с другими форками) и автоматического обновления статистики вашего бота на платформе [Mircord](https://mircord.xyz). Библиотека поддерживает асинхронные операции и включает механизм обработки ошибок, что обеспечивает стабильную работу и обновление статистики.
