@@ -16,11 +16,75 @@
 from mircord_api_py.Bot import MircordBotStats
 ```
 
-## Пример использования
+# Пример использования
 ## Инициализация
 Для начала работы создайте экземпляр класса `MircordBotStats`, передав ему объект вашего бота и опциональные параметры для настройки интервалов обновления и повторных попыток:
 ```py
-from mircord_bot_stats import MircordBotStats
+from mircord_api_py.Bot import MircordBotStats
 
 bot_stats = MircordBotStats(bot, retry_after=120, update_interval=120)
+```
+
+## Активация обновлений
+Для запуска асинхронной задачи, которая будет обновлять статистику, вызовите метод `activate`:
+```py
+await bot_stats.activate()
+```
+
+## Остановка обновлений
+Если вам нужно остановить обновления, используйте метод `stop`:
+```py
+await bot_stats.stop()
+```
+
+## Немедленное обновление
+Для немедленного обновления статистики вызовите метод `update_now`:
+```py
+await bot_stats.update_now()
+```
+
+## Проверка статуса задачи обновления
+Вы можете проверить, работает ли задача обновления, вызвав метод `is_running`:
+```py
+if bot_stats.is_running():
+    print("Задача обновления запущена.")
+else:
+    print("Задача обновления остановлена.")
+```
+
+## Настройка интервалов
+Вы можете настроить интервалы обновления и повторных попыток следующим образом:
+```py
+# Установить новый интервал обновления (в секундах)
+await bot_stats.update_interval(60)
+
+# Установить интервал повторных попыток при ошибке (в секундах)
+await bot_stats.update_retry_after(90)
+```
+
+## Получение времени с момента последнего обновления
+Чтобы узнать, сколько времени прошло с момента последнего успешного обновления статистики, используйте метод `get_time_since_last_update`:
+```py
+time_since_update = bot_stats.get_time_since_last_update()
+print(f"Прошло времени с последнего обновления: {time_since_update}")
+```
+
+# Полный пример интеграции с discord.py
+Ниже приведён полный пример использования библиотеки в боте, созданном на основе `discord.py`:
+```py
+import discord
+from mircord_api_py.Bot import MircordBotStats
+
+intents = discord.Intents.default()
+intents.guilds = True  # Необходимо для работы со списком серверов
+bot = discord.Bot(intents=intents)
+
+# Событие, срабатывающее при запуске бота
+@bot.event
+async def on_ready():
+    bot_stats = MircordBotStats(bot, retry_after=120, update_interval=120)
+    await bot_stats.activate()  # Активация обновления статистики
+    print("Бот запущен и Mircord_API_Py активен.")
+
+bot.run('YOUR_BOT_TOKEN')  # Запуск бота
 ```
