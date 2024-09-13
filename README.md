@@ -1,16 +1,7 @@
-<html>
 <p align="center">
-  <img class="logo" src="https://mircord.xyz/img/logo.png" alt="Mircord Logo" width="200">
+  <img class="logo" src="image/logo.png" alt="Mircord Logo" width="200">
 </p>
 
-<style>
-.logo {
-    border-radius: 50%;
-    border: 2px solid #4CAF50;
-}
-</style>
-
-</html>
 
 # Mircord_API_Py
 
