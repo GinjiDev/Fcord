@@ -52,7 +52,7 @@ class MircordBotStats:
 
                     if response.status_code == 200:
                         print("[MIRCORD] Статистика успешно обновлена.")
-                        self.last_request_time = time.time()  # Обновляем время после успешного обновления
+                        self.last_request_time = time.time()
                     else:
                         await self.handle_error(response)
 
@@ -68,8 +68,8 @@ class MircordBotStats:
         status_code = response.status_code
         if status_code == 429:
             print("[MIRCORD] Ошибка: Превышен лимит запросов. Повтор через минуту.")
-            await asyncio.sleep(self.retry_after)  # Ожидание до повторной попытки
-            await self.send_stats()  # Повторная попытка
+            await asyncio.sleep(self.retry_after)
+            await self.send_stats()
         elif status_code in (401, 403):
             print("[MIRCORD] Ошибка: Неавторизован. Проверьте ваш API-ключ.")
         elif status_code == 404:
