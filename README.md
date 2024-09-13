@@ -73,18 +73,22 @@ print(f"Прошло времени с последнего обновления
 Ниже приведён полный пример использования библиотеки в боте, созданном на основе `discord.py`:
 ```py
 import discord
+from discord.ext import commands
 from mircord_api_py.Bot import MircordBotStats
 
 intents = discord.Intents.default()
 intents.guilds = True  # Необходимо для работы со списком серверов
-bot = discord.Bot(intents=intents)
+
+# Создаём объект бота с использованием commands.Bot
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Событие, срабатывающее при запуске бота
 @bot.event
 async def on_ready():
     bot_stats = MircordBotStats(bot, retry_after=120, update_interval=120)
     await bot_stats.activate()  # Активация обновления статистики
-    print("Бот запущен и Mircord_API_Py активен.")
+    print(f"Бот {bot.user} запущен и Mircord_API_Py активен.")
 
-bot.run('YOUR_BOT_TOKEN')  # Запуск бота
+# Запуск бота
+bot.run('YOUR_BOT_TOKEN')
 ```
