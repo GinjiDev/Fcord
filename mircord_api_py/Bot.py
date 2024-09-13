@@ -3,7 +3,7 @@ import asyncio
 import httpx
 import logging
 
-from data import errors
+from .data.errors import error_messages
 
 class MircordBotStats:
     def __init__(self, bot, retry_after: int = 120, update_interval: int = 120):
@@ -81,7 +81,7 @@ class MircordBotStats:
     async def handle_error(self, response: httpx.Response) -> None:
         status_code = response.status_code
 
-        message = errors.get(status_code, f"Неожиданный код ошибки: {status_code}. Проверьте библиотеку.")
+        message = error_messages.get(status_code, f"Неожиданный код ошибки: {status_code}. Проверьте библиотеку.")
         self.logger.error(f"Ошибка при отправке запроса: Код - {status_code} | {message}")
 
         if status_code == 429:
