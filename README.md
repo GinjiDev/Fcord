@@ -1,5 +1,5 @@
 <p align="center">
-    <img class="logo" src="src/image/logo.png" alt="Mircord Logo" width="200">
+    <img class="logo" src="src/images/logo.png" alt="Mircord Logo" width="200">
 </p>
 <p align="center">
     <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
