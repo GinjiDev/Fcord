@@ -19,7 +19,7 @@ class MircordBotStats:
             update_interval = 120
         
         self.bot = bot
-        self.base_url = "https://mircord.xyz/bot-stats"
+        self.base_url = "https://mircord.xyz/api/stats-update"
         self.headers = {'Authorization': bot.mircord_api_key}
         self.retry_after = retry_after
         self.update_interval = update_interval
