@@ -1,21 +1,17 @@
 import time
 import asyncio
 import httpx
-import logging
 
 from .data.errors import error_messages
 
 class MircordBotStats:
     def __init__(self, bot, retry_after: int = 120, update_interval: int = 120):
         
-        self.logger = logging.getLogger('MircordBotStats')
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - [MIRCORD] - [%(levelname)s] - %(message)s')
-        
         if retry_after <= 0:
-            self.logger.error("retry_after должно быть положительным числом. Сброшено до 120!")
+            self.print_mircord("retry_after должно быть положительным числом. Сброшено до 120!")
             retry_after = 120
         if update_interval <= 0:
-            self.logger.error("update_interval должно быть положительным числом. Сброшено до 120!")
+            self.print_mircord("update_interval должно быть положительным числом. Сброшено до 120!")
             update_interval = 120
         
         self.bot = bot
@@ -27,13 +23,16 @@ class MircordBotStats:
         self.running = False
         self.update_task = None
 
+    def print_mircord(self, message: str) -> None:
+        print(f"- [MIRCORD] - {message}")
+
     async def activate(self, update_interval: int = None) -> None:
         if update_interval:
             self.update_interval = update_interval
         if not self.running:
             self.running = True
             self.update_task = asyncio.create_task(self.run_update_loop())
-            self.logger.info(f"Асинхронная задача для обновления статистики запущена. Интервал обновления: {self.update_interval} секунд. Интервал повторной попытки при ошибке: {self.retry_after} секунд")
+            self.print_mircord(f"Асинхронная задача для обновления статистики запущена. Интервал обновления: {self.update_interval} секунд. Интервал повторной попытки при ошибке: {self.retry_after} секунд")
 
     async def stop(self) -> None:
         if self.running:
@@ -43,7 +42,7 @@ class MircordBotStats:
                 try:
                     await self.update_task
                 except asyncio.CancelledError:
-                    self.logger.info("Асинхронная задача для обновления статистики остановлена.")
+                    self.print_mircord("Асинхронная задача для обновления статистики остановлена.")
 
     async def run_update_loop(self) -> None:
         while self.running:
@@ -65,24 +64,24 @@ class MircordBotStats:
                     response = await client.post(self.base_url, json=bot_stats, headers=self.headers)
 
                     if response.status_code == 200:
-                        self.logger.info("Статистика успешно обновлена.")
+                        self.print_mircord("Статистика успешно обновлена.")
                         self.last_request_time = time.time()
                     else:
                         await self.handle_error(response)
 
             except httpx.RequestError as e:
-                self.logger.error(f"Ошибка при отправке запроса: {e}")
+                self.print_mircord(f"Ошибка при отправке запроса: {e}")
             except Exception as e:
-                self.logger.error(f"Неизвестная ошибка: {e}")
+                self.print_mircord(f"Неизвестная ошибка: {e}")
         else:
             wait_time = 30 - (time.time() - self.last_request_time)
-            self.logger.warning(f"Превышен лимит запросов. Подождите {wait_time:.2f} секунд.")
+            self.print_mircord(f"Превышен лимит запросов. Подождите {wait_time:.2f} секунд.")
 
     async def handle_error(self, response: httpx.Response) -> None:
         status_code = response.status_code
 
         message = error_messages.get(status_code, f"Неожиданный код ошибки: {status_code}. Проверьте библиотеку.")
-        self.logger.error(f"Ошибка при отправке запроса: Код - {status_code} | {message}")
+        self.print_mircord(f"Ошибка при отправке запроса: Код - {status_code} | {message}")
 
         if status_code == 429:
             await asyncio.sleep(self.retry_after)
