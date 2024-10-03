@@ -1,5 +1,5 @@
 <p align="center">
-    <img class="logo" src="src/images/logo.png" alt="Mircord Logo" width="200">
+    <!--<img class="logo" src="src/images/logo.png" alt="Mircord Logo" width="200">-->
 </p>
 <p align="center">
     <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
@@ -8,9 +8,9 @@
 </p>
 
 
-# Mircord_API_Py
+# FCord_api.py
 
-**Mircord_API_Py** — это Python-библиотека, предназначенная для интеграции с `discord.py`(+ с другими форками) и автоматического обновления статистики вашего бота на платформе [Mircord](https://mircord.xyz). Библиотека поддерживает асинхронные операции и включает механизм обработки ошибок, что обеспечивает стабильную работу и обновление статистики.
+**FCord_api.py** — это Python-библиотека, предназначенная для интеграции с `discord.py`(+ с другими форками) и автоматического обновления статистики вашего бота на платформе [Fcord](https://mivian.ru/monitoring). Библиотека поддерживает асинхронные операции и включает механизм обработки ошибок, что обеспечивает стабильную работу и обновление статистики.
 
 ## Возможности
 
@@ -20,21 +20,22 @@
 - **Мониторинг в реальном времени**: Возможность отслеживания времени последнего обновления и статуса выполнения задачи обновления.
 
 ## Установка
-Для работы Mircord_API_Py необходимы данные 3 библиотеки: `time`, `asyncio`, `httpx`.
-Быстрая установка необходимых библиотек: `pip install asyncio httpx`
+Для работы FCord_api.py необходимы данные 2 библиотеки: `asyncio`, `httpx`.
+Быстрая установка: `pip install git+https://github.com/GinjiDev/Fcord_API`
+**для быстрой установки требуется наличие git**
 
-Установите библиотеку путём загрузки архива -> перетащите папку **mircord_api_py** к своему проекту и импортируйте в вашем проекте:
+Установите библиотеку путём загрузки архива -> перетащите папку **FCord_api** к своему проекту и импортируйте в вашем проекте:
 ```py
-from mircord_api_py.Bot import MircordBotStats
+from FCord_api.Bot import FcordBotStats
 ```
 
 # Пример использования
 ## Инициализация
-Для начала работы создайте экземпляр класса `MircordBotStats`, передав ему объект вашего бота и опциональные параметры для настройки интервалов обновления и повторных попыток:
+Для начала работы создайте экземпляр класса `FcordBotStats`, передав ему объект вашего бота и опциональные параметры для настройки интервалов обновления и повторных попыток:
 ```py
-from mircord_api_py.Bot import MircordBotStats
+from FCord_api.Bot import FcordBotStats
 
-bot_stats = MircordBotStats(bot, retry_after=120, update_interval=120)
+bot_stats = FcordBotStats(bot, retry_after=120, update_interval=120)
 ```
 
 ## Активация обновлений
@@ -86,21 +87,21 @@ print(f"Прошло времени с последнего обновления
 ```py
 import discord
 from discord.ext import commands
-from mircord_api_py.Bot import MircordBotStats
+from Fcord_api.Bot import FcordBotStats
 
 intents = discord.Intents.default()
 intents.guilds = True  # Необходимо для работы со списком серверов
 
 # Создаём объект бота с использованием commands.Bot
 bot = commands.Bot(command_prefix="!", intents=intents)
-bot.mircord_api_key = "MIRCORD_KEY"
+bot.Fcord_api_key = "MIRCORD_KEY"
 
 # Событие, срабатывающее при запуске бота
 @bot.event
 async def on_ready():
-    bot_stats = MircordBotStats(bot, retry_after=120, update_interval=120)
+    bot_stats = FcordBotStats(bot, retry_after=120, update_interval=120)
     await bot_stats.activate()  # Активация обновления статистики
-    print(f"Бот {bot.user} запущен и Mircord_API_Py активен.")
+    print(f"Бот {bot.user} запущен и Fcord_API_Py активен.")
 
 # Запуск бота
 bot.run('BOT-TOKEN')

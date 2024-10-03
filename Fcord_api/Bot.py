@@ -4,27 +4,27 @@ import httpx
 
 from .data.errors import error_messages
 
-class MircordBotStats:
+class FcordBotStats:
     def __init__(self, bot, retry_after: int = 120, update_interval: int = 120):
         
         if retry_after <= 0:
-            self.print_mircord("retry_after должно быть положительным числом. Сброшено до 120!")
+            self.print("retry_after должно быть положительным числом. Сброшено до 120!")
             retry_after = 120
         if update_interval <= 0:
-            self.print_mircord("update_interval должно быть положительным числом. Сброшено до 120!")
+            self.print("update_interval должно быть положительным числом. Сброшено до 120!")
             update_interval = 120
         
         self.bot = bot
-        self.base_url = "https://mircord.xyz/api/stats-update"
-        self.headers = {'Authorization': bot.mircord_api_key}
+        self.base_url = f"https://mircord.xyz/api/monitoring/bots/{bot.user.id}/stats-update"
+        self.headers = {'Authorization': bot.Fcord_api_key}
         self.retry_after = retry_after
         self.update_interval = update_interval
         self.last_request_time = 0
         self.running = False
         self.update_task = None
 
-    def print_mircord(self, message: str) -> None:
-        print(f"- [MIRCORD] - {message}")
+    def print(self, message: str) -> None:
+        print(f"- [Fcord] - {message}")
 
     async def activate(self, update_interval: int = None) -> None:
         if update_interval:
@@ -32,7 +32,7 @@ class MircordBotStats:
         if not self.running:
             self.running = True
             self.update_task = asyncio.create_task(self.run_update_loop())
-            self.print_mircord(f"Асинхронная задача для обновления статистики запущена. Интервал обновления: {self.update_interval} секунд. Интервал повторной попытки при ошибке: {self.retry_after} секунд")
+            self.print(f"Асинхронная задача для обновления статистики запущена. Интервал обновления: {self.update_interval} секунд. Интервал повторной попытки при ошибке: {self.retry_after} секунд")
 
     async def stop(self) -> None:
         if self.running:
@@ -42,7 +42,7 @@ class MircordBotStats:
                 try:
                     await self.update_task
                 except asyncio.CancelledError:
-                    self.print_mircord("Асинхронная задача для обновления статистики остановлена.")
+                    self.print("Асинхронная задача для обновления статистики остановлена.")
 
     async def run_update_loop(self) -> None:
         while self.running:
