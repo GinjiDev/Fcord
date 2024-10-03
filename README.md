@@ -26,14 +26,14 @@
 
 Установите библиотеку путём загрузки архива -> перетащите папку **FCord_api** к своему проекту и импортируйте в вашем проекте:
 ```py
-from FCord_api.Bot import FcordBotStats
+from Fcord_api.Bot import FcordBotStats
 ```
 
 # Пример использования
 ## Инициализация
 Для начала работы создайте экземпляр класса `FcordBotStats`, передав ему объект вашего бота и опциональные параметры для настройки интервалов обновления и повторных попыток:
 ```py
-from FCord_api.Bot import FcordBotStats
+from Fcord_api.Bot import FcordBotStats
 
 bot_stats = FcordBotStats(bot, retry_after=120, update_interval=120)
 ```
